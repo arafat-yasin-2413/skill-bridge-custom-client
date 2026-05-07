@@ -1,0 +1,1 @@
+Title bar Icon color : #593ee0
