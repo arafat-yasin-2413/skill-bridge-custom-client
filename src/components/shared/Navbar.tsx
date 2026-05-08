@@ -24,11 +24,9 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import logoImage from "../../../public/Logo.png";
 import Link from "next/link";
 import { ThemeToggler } from "./ThemeToggler";
+import LogoBrand from "./LogoBrand";
 
 interface MenuItem {
     title: string;
@@ -40,12 +38,7 @@ interface MenuItem {
 
 interface Navbar1Props {
     className?: string;
-    logo?: {
-        url: string;
-        alt: string;
-        title: string;
-        className?: string;
-    };
+
     menu?: MenuItem[];
     auth?: {
         login: {
@@ -60,11 +53,6 @@ interface Navbar1Props {
 }
 
 const Navbar = ({
-    logo = {
-        url: "/",
-        alt: "logo",
-        title: "Skill Bridge",
-    },
     menu = [
         { title: "Home", url: "#" },
         {
@@ -143,8 +131,8 @@ const Navbar = ({
         },
     ],
     auth = {
-        login: { title: "Login", url: "#" },
-        signup: { title: "Sign up", url: "#" },
+        login: { title: "Login", url: "/login" },
+        signup: { title: "Register", url: "/register" },
     },
 }: Navbar1Props) => {
     return (
@@ -154,19 +142,8 @@ const Navbar = ({
                 <nav className="hidden items-center justify-between lg:flex">
                     <div className="flex items-center gap-6">
                         {/* Logo */}
-                        <Link
-                            href={logo.url}
-                            className="flex items-center gap-2">
-                            <Image
-                                src={logoImage}
-                                className="dark:invert"
-                                alt={logo.alt}
-                                width={48}
-                                height={48}
-                            />
-                            <span className="text-lg font-semibold tracking-tighter">
-                                {logo.title}
-                            </span>
+                        <Link href="/">
+                            <LogoBrand />
                         </Link>
                     </div>
                     {/* nav menus */}
@@ -177,8 +154,7 @@ const Navbar = ({
                             </NavigationMenuList>
                         </NavigationMenu>
                         <div className="ml-2">
-
-                        <ThemeToggler/>
+                            <ThemeToggler />
                         </div>
                     </div>
                     {/* nav auth menus */}
@@ -196,15 +172,9 @@ const Navbar = ({
                 <div className="block lg:hidden">
                     <div className="flex items-center justify-between">
                         {/* Logo */}
-                        <a href={logo.url} className="flex items-center gap-2">
-                            <Image
-                                src={logoImage}
-                                className="max-h-8 dark:invert"
-                                alt={logo.alt}
-                                width={48}
-                                height={48}
-                            />
-                        </a>
+                       <Link href="/">
+                            <LogoBrand />
+                        </Link>
                         <Sheet>
                             <SheetTrigger asChild>
                                 <Button variant="outline" size="icon">
@@ -214,17 +184,9 @@ const Navbar = ({
                             <SheetContent className="overflow-y-auto">
                                 <SheetHeader>
                                     <SheetTitle>
-                                        <a
-                                            href={logo.url}
-                                            className="flex items-center gap-2">
-                                            <Image
-                                                src={logoImage}
-                                                className="max-h-8 dark:invert"
-                                                alt={logo.alt}
-                                                width={48}
-                                                height={48}
-                                            />
-                                        </a>
+                                        <Link href="/">
+                            <LogoBrand />
+                        </Link>
                                     </SheetTitle>
                                 </SheetHeader>
                                 <div className="flex flex-col gap-6 p-4">
