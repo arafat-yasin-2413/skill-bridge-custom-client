@@ -122,12 +122,12 @@ const Navbar = ({
             ],
         },
         {
-            title: "Pricing",
-            url: "#",
+            title: "About",
+            url: "/about",
         },
         {
             title: "Blog",
-            url: "#",
+            url: "/blog",
         },
     ],
     auth = {
