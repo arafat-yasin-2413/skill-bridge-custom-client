@@ -16,6 +16,7 @@ export default function RegisterPage() {
     const {
         register,
         handleSubmit,
+        control,
         formState: { errors, isSubmitting },
     } = useForm<registerFormValues>();
 
@@ -37,6 +38,7 @@ export default function RegisterPage() {
                 <RegisterForm
                     register={register}
                     handleSubmit={handleSubmit}
+                    control={control}
                     onSubmit={onSubmit}
                     errors={errors}
                     isSubmitting={isSubmitting}

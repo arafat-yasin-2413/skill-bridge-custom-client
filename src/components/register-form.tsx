@@ -19,13 +19,26 @@ import {
 import { Input } from "@/components/ui/input";
 
 import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+
+import {
+    Control,
+    Controller,
     FieldErrors,
     SubmitHandler,
     UseFormHandleSubmit,
     UseFormRegister,
 } from "react-hook-form";
 
+import Link from "next/link";
+
 type registerFormValues = {
+    role: "STUDENT" | "TUTOR";
     name: string;
     email: string;
     password: string;
@@ -37,6 +50,7 @@ type registerFormProps = {
     onSubmit: SubmitHandler<registerFormValues>;
     errors: FieldErrors<registerFormValues>;
     isSubmitting: boolean;
+    control: Control<registerFormValues>;
     className?: string;
 };
 
@@ -47,6 +61,7 @@ export function RegisterForm({
     onSubmit,
     errors,
     isSubmitting,
+    control,
     ...props
 }: registerFormProps) {
     return (
@@ -65,6 +80,45 @@ export function RegisterForm({
                 <CardContent>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <FieldGroup>
+                            {/* ROLE */}
+                            <Field>
+                                <FieldLabel>Role</FieldLabel>
+
+                                <Controller
+                                    name="role"
+                                    control={control}
+                                    rules={{
+                                        required: "Role is required",
+                                    }}
+                                    render={({ field }) => (
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Select role" />
+                                            </SelectTrigger>
+
+                                            <SelectContent>
+                                                <SelectItem value="STUDENT">
+                                                    STUDENT
+                                                </SelectItem>
+
+                                                <SelectItem value="TUTOR">
+                                                    TUTOR
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    )}
+                                />
+
+                                {errors.role && (
+                                    <FieldDescription className="text-red-500">
+                                        {errors.role.message}
+                                    </FieldDescription>
+                                )}
+                            </Field>
+
                             {/* NAME */}
                             <Field>
                                 <FieldLabel htmlFor="name">
@@ -152,19 +206,13 @@ export function RegisterForm({
 
                                 <FieldDescription className="text-center">
                                     Already have an account?{" "}
-                                    <a href="#">Sign in</a>
+                                    <Link href="/login">Log in</Link>
                                 </FieldDescription>
                             </Field>
                         </FieldGroup>
                     </form>
                 </CardContent>
             </Card>
-
-            <FieldDescription className="px-6 text-center">
-                By clicking continue, you agree to our{" "}
-                <a href="#">Terms of Service</a> and{" "}
-                <a href="#">Privacy Policy</a>.
-            </FieldDescription>
         </div>
     );
 }
