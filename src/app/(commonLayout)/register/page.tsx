@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 type registerFormValues = {
+    role: "STUDENT" | "TUTOR";
     name: string;
     email: string;
     password: string;
