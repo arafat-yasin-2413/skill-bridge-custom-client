@@ -23,8 +23,31 @@ export default function RegisterPage() {
 
     const onSubmit = async (data: registerFormValues) => {
         console.log(data);
+        try {
+            // api call here
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/register`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                },
+            );
 
-        // api call here
+            const result = await response.json();
+            console.log("Register response printing ---- : ", response);
+            console.log("Register result printing ---- : ", result);
+
+            if (!response.ok) {
+                throw new Error(result.message || "Registration Failed!!!");
+            }
+
+            console.log("Success. ", result);
+        } catch (error) {
+            console.error("Error : ", error);
+        }
     };
 
     return (
