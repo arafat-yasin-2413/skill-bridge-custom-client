@@ -143,7 +143,7 @@ const Navbar = ({
                 <div className="block lg:hidden">
                     <div className="flex items-center justify-between">
                         {/* Logo */}
-                       <Link href="/">
+                        <Link href="/">
                             <LogoBrand />
                         </Link>
                         <Sheet>
@@ -156,8 +156,8 @@ const Navbar = ({
                                 <SheetHeader>
                                     <SheetTitle>
                                         <Link href="/">
-                            <LogoBrand />
-                        </Link>
+                                            <LogoBrand />
+                                        </Link>
                                     </SheetTitle>
                                 </SheetHeader>
                                 <div className="flex flex-col gap-6 p-4">
@@ -169,6 +169,8 @@ const Navbar = ({
                                             renderMobileMenuItem(item),
                                         )}
                                     </Accordion>
+
+                                    <ThemeToggler />
 
                                     <div className="flex flex-col gap-3">
                                         <Button asChild variant="outline">
