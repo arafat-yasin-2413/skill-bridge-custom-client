@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +25,8 @@ import {
     UseFormRegister,
 } from "react-hook-form";
 import Link from "next/link";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 type loginFormValues = {
     email: string;
@@ -47,6 +51,8 @@ export function LoginForm({
     isSubmitting,
     ...props
 }: loginFormProps) {
+    const [showPassword, setShowPassword] = useState(false);
+
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
@@ -103,19 +109,40 @@ export function LoginForm({
                                         Forgot your password?
                                     </Link>
                                 </div>
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    {...register("password", {
-                                        required: "Password is required",
 
-                                        minLength: {
-                                            value: 8,
-                                            message:
-                                                "Password must be at least 8 characters",
-                                        },
-                                    })}
-                                />
+                                <div className="relative">
+                                    <Input
+                                        id="password"
+                                        type={
+                                            showPassword ? "text" : "password"
+                                        }
+                                        className="pr-10"
+                                        {...register("password", {
+                                            required: "Password is required",
+
+                                            minLength: {
+                                                value: 8,
+                                                message:
+                                                    "Password must be at least 8 characters",
+                                            },
+                                        })}
+                                    />
+
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() =>
+                                            setShowPassword(!showPassword)
+                                        }
+                                        className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 hover:bg-transparent">
+                                        {showPassword ? (
+                                            <EyeOff className="h-4 w-4 text-muted-foreground" />
+                                        ) : (
+                                            <Eye className="h-4 w-4 text-muted-foreground" />
+                                        )}
+                                    </Button>
+                                </div>
                                 {errors.password ? (
                                     <FieldDescription className="text-red-500">
                                         {errors.password.message}
