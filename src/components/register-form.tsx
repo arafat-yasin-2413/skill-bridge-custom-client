@@ -203,7 +203,7 @@ export function RegisterForm({
                                         onClick={() =>
                                             setShowPassword(!showPassword)
                                         }
-                                        className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 hover:bg-transparent">
+                                        className="absolute right-1 h-7 w-7 active:translate-y-0 active:scale-95 hover:bg-transparent">
                                         {showPassword ? (
                                             <EyeOff className="h-4 w-4 text-muted-foreground" />
                                         ) : (
