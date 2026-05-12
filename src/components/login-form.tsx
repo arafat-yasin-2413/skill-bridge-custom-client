@@ -16,11 +16,37 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { FcGoogle } from "react-icons/fc";
+import {
+    FieldErrors,
+    SubmitHandler,
+    UseFormHandleSubmit,
+    UseFormRegister,
+} from "react-hook-form";
+import Link from "next/link";
+
+type loginFormValues = {
+    email: string;
+    password: string;
+};
+
+type loginFormProps = {
+    register: UseFormRegister<loginFormValues>;
+    handleSubmit: UseFormHandleSubmit<loginFormValues>;
+    onSubmit: SubmitHandler<loginFormValues>;
+    errors: FieldErrors<loginFormValues>;
+    isSubmitting: boolean;
+    className?: string;
+};
 
 export function LoginForm({
     className,
+    register,
+    handleSubmit,
+    onSubmit,
+    errors,
+    isSubmitting,
     ...props
-}: React.ComponentProps<"div">) {
+}: loginFormProps) {
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
@@ -31,7 +57,7 @@ export function LoginForm({
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <FieldGroup>
                             <Field>
                                 <Button variant="outline" type="button">
@@ -42,33 +68,72 @@ export function LoginForm({
                             <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                                 Or continue with
                             </FieldSeparator>
+
+                            {/* EMAIL */}
                             <Field>
                                 <FieldLabel htmlFor="email">Email</FieldLabel>
                                 <Input
                                     id="email"
                                     type="email"
                                     placeholder="m@example.com"
-                                    required
+                                    {...register("email", {
+                                        required: "Email is required",
+                                        pattern: {
+                                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                            message: "Enter a valid email",
+                                        },
+                                    })}
                                 />
+                                {errors.email && (
+                                    <FieldDescription className="text-red-500">
+                                        {errors.email.message}
+                                    </FieldDescription>
+                                )}
                             </Field>
+
+                            {/* PASSWORD */}
                             <Field>
                                 <div className="flex items-center">
                                     <FieldLabel htmlFor="password">
                                         Password
                                     </FieldLabel>
-                                    <a
-                                        href="#"
+                                    <Link
+                                        href="/forgot-password"
                                         className="ml-auto text-sm underline-offset-4 hover:underline">
                                         Forgot your password?
-                                    </a>
+                                    </Link>
                                 </div>
-                                <Input id="password" type="password" required />
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    {...register("password", {
+                                        required: "Password is required",
+
+                                        minLength: {
+                                            value: 8,
+                                            message:
+                                                "Password must be at least 8 characters",
+                                        },
+                                    })}
+                                />
+                                {errors.password ? (
+                                    <FieldDescription className="text-red-500">
+                                        {errors.password.message}
+                                    </FieldDescription>
+                                ) : (
+                                    <FieldDescription>
+                                        Must be at least 8 characters long.
+                                    </FieldDescription>
+                                )}
                             </Field>
                             <Field>
-                                <Button type="submit">Login</Button>
+                                <Button type="submit" disabled={isSubmitting}>
+                                    {isSubmitting ? "Logging in" : "Log in"}
+                                </Button>
+
                                 <FieldDescription className="text-center">
                                     Don&apos;t have an account?{" "}
-                                    <a href="#">Sign up</a>
+                                    <Link href="/register">Register</Link>
                                 </FieldDescription>
                             </Field>
                         </FieldGroup>
@@ -77,8 +142,8 @@ export function LoginForm({
             </Card>
             <FieldDescription className="px-6 text-center">
                 By clicking continue, you agree to our{" "}
-                <a href="#">Terms of Service</a> and{" "}
-                <a href="#">Privacy Policy</a>.
+                <Link href="/terms-policy">Terms of Service</Link> and{" "}
+                <Link href="/privacy-policy">Privacy Policy</Link>.
             </FieldDescription>
         </div>
     );
