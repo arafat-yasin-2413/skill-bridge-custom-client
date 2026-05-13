@@ -2,7 +2,10 @@
 
 import { LoginForm } from "@/components/login-form";
 import LogoBrand from "@/components/shared/LogoBrand";
+import { useAuth } from "@/providers/AuthProvider";
+import { getUser } from "@/services/auth";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -19,6 +22,12 @@ export default function LoginPage() {
         formState: { errors, isSubmitting },
     } = useForm<loginFormValues>();
 
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const { loadUser } = useAuth();
+
+    const callbackUrl = searchParams.get("callbackUrl") || "/";
+
     const onSubmit = async (data: loginFormValues) => {
         console.log(data);
 
@@ -34,7 +43,6 @@ export default function LoginPage() {
                     },
                     credentials: "include",
                     body: JSON.stringify(data),
-
                 },
             );
 
@@ -57,8 +65,13 @@ export default function LoginPage() {
 
             // console.log("Token ====== : ", result.data.token);
             console.log("Success. ", result);
+            
+            // auth state update
+            await loadUser();
 
             reset();
+            router.push(callbackUrl);
+            router.refresh();
         } catch (error) {
             toast.error(
                 error instanceof Error

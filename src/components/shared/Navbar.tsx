@@ -27,6 +27,8 @@ import {
 import Link from "next/link";
 import { ThemeToggler } from "./ThemeToggler";
 import LogoBrand from "./LogoBrand";
+import { logoutUser } from "@/services/auth";
+import { useAuth } from "@/providers/AuthProvider";
 
 interface MenuItem {
     title: string;
@@ -45,7 +47,11 @@ interface Navbar1Props {
             title: string;
             url: string;
         };
-        signup: {
+        register: {
+            title: string;
+            url: string;
+        };
+        logout: {
             title: string;
             url: string;
         };
@@ -103,9 +109,17 @@ const Navbar = ({
     ],
     auth = {
         login: { title: "Login", url: "/login" },
-        signup: { title: "Register", url: "/register" },
+        register: { title: "Register", url: "/register" },
+        logout: { title: "Log Out", url: "" },
     },
 }: Navbar1Props) => {
+    const { user, setUser, loading, loadUser } = useAuth();
+
+    const handleLogout = () => {
+        logoutUser();
+        setUser(null);
+    };
+
     return (
         <section className="py-2">
             <div className="container mx-auto">
@@ -130,12 +144,32 @@ const Navbar = ({
                     </div>
                     {/* nav auth menus */}
                     <div className="flex gap-2">
-                        <Button asChild variant="outline" size="sm">
-                            <a href={auth.login.url}>{auth.login.title}</a>
-                        </Button>
-                        <Button asChild size="sm">
-                            <a href={auth.signup.url}>{auth.signup.title}</a>
-                        </Button>
+                        {user ? (
+                            <>
+                                <Button
+                                    onClick={handleLogout}
+                                    asChild
+                                    variant="destructive"
+                                    size="sm">
+                                    <Link href={auth.logout.url}>
+                                        {auth.logout.title}
+                                    </Link>
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Button asChild variant="outline" size="sm">
+                                    <Link href={auth.login.url}>
+                                        {auth.login.title}
+                                    </Link>
+                                </Button>
+                                <Button asChild size="sm">
+                                    <Link href={auth.register.url}>
+                                        {auth.register.title}
+                                    </Link>
+                                </Button>
+                            </>
+                        )}
                     </div>
                 </nav>
 
@@ -173,16 +207,37 @@ const Navbar = ({
                                     <ThemeToggler />
 
                                     <div className="flex flex-col gap-3">
-                                        <Button asChild variant="outline">
-                                            <a href={auth.login.url}>
-                                                {auth.login.title}
-                                            </a>
-                                        </Button>
-                                        <Button asChild>
-                                            <a href={auth.signup.url}>
-                                                {auth.signup.title}
-                                            </a>
-                                        </Button>
+                                        {user ? (
+                                            <>
+                                                <Button
+                                                    onClick={handleLogout}
+                                                    asChild
+                                                    variant="destructive">
+                                                    <Link
+                                                        href={auth.logout.url}>
+                                                        {auth.logout.title}
+                                                    </Link>
+                                                </Button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Button
+                                                    asChild
+                                                    variant="outline">
+                                                    <Link href={auth.login.url}>
+                                                        {auth.login.title}
+                                                    </Link>
+                                                </Button>
+                                                <Button asChild>
+                                                    <Link
+                                                        href={
+                                                            auth.register.url
+                                                        }>
+                                                        {auth.register.title}
+                                                    </Link>
+                                                </Button>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             </SheetContent>
