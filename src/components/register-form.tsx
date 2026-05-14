@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ import {
     FieldDescription,
     FieldGroup,
     FieldLabel,
+    FieldSeparator,
 } from "@/components/ui/field";
 
 import { Input } from "@/components/ui/input";
@@ -26,6 +27,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
+    SelectGroup,
 } from "@/components/ui/select";
 
 import {
@@ -40,21 +42,22 @@ import {
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { FcGoogle } from "react-icons/fc";
 
-type registerFormValues = {
+type RegisterFormValues = {
     role: "STUDENT" | "TUTOR";
     name: string;
     email: string;
     password: string;
 };
 
-type registerFormProps = {
-    register: UseFormRegister<registerFormValues>;
-    handleSubmit: UseFormHandleSubmit<registerFormValues>;
-    onSubmit: SubmitHandler<registerFormValues>;
-    errors: FieldErrors<registerFormValues>;
+type RegisterFormProps = {
+    register: UseFormRegister<RegisterFormValues>;
+    handleSubmit: UseFormHandleSubmit<RegisterFormValues>;
+    onSubmit: SubmitHandler<RegisterFormValues>;
+    errors: FieldErrors<RegisterFormValues>;
     isSubmitting: boolean;
-    control: Control<registerFormValues>;
+    control: Control<RegisterFormValues>;
     className?: string;
 };
 
@@ -66,13 +69,11 @@ export function RegisterForm({
     errors,
     isSubmitting,
     control,
-    ...props
-}: registerFormProps) {
-
+}: RegisterFormProps) {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
+        <div className={cn("flex flex-col gap-6", className)}>
             <Card>
                 <CardHeader className="text-center">
                     <CardTitle className="text-xl">
@@ -80,12 +81,14 @@ export function RegisterForm({
                     </CardTitle>
 
                     <CardDescription>
-                        Enter your email below to create your account
+                        Enter your information below
                     </CardDescription>
                 </CardHeader>
 
                 <CardContent>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="space-y-4">
                         <FieldGroup>
                             {/* ROLE */}
                             <Field>
@@ -100,20 +103,21 @@ export function RegisterForm({
                                     render={({ field }) => (
                                         <Select
                                             onValueChange={field.onChange}
-                                            defaultValue={field.value}
-                                        >
+                                            defaultValue={field.value}>
                                             <SelectTrigger className="w-full">
                                                 <SelectValue placeholder="Select role" />
                                             </SelectTrigger>
 
                                             <SelectContent>
-                                                <SelectItem value="STUDENT">
-                                                    STUDENT
-                                                </SelectItem>
+                                                <SelectGroup>
+                                                    <SelectItem value="STUDENT">
+                                                        STUDENT
+                                                    </SelectItem>
 
-                                                <SelectItem value="TUTOR">
-                                                    TUTOR
-                                                </SelectItem>
+                                                    <SelectItem value="TUTOR">
+                                                        TUTOR
+                                                    </SelectItem>
+                                                </SelectGroup>
                                             </SelectContent>
                                         </Select>
                                     )}
@@ -125,6 +129,17 @@ export function RegisterForm({
                                     </FieldDescription>
                                 )}
                             </Field>
+
+                            {/* GOOGLE */}
+                            <Field>
+                                <Button variant="outline" type="button">
+                                    <FcGoogle />
+                                    Register with Google
+                                </Button>
+                            </Field>
+                            <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+                                Or continue with
+                            </FieldSeparator>
 
                             {/* NAME */}
                             <Field>

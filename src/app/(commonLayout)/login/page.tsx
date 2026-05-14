@@ -47,8 +47,8 @@ export default function LoginPage() {
             );
 
             const result = await response.json();
-            console.log("Login response printing ---- : ", response);
-            console.log("Login result printing ---- : ", result);
+            // console.log("Login response printing ---- : ", response);
+            // console.log("Login result printing ---- : ", result);
 
             if (!response.ok) {
                 // throw new Error(result.message || "Login Failed!!!");

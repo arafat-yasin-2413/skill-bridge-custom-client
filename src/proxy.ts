@@ -3,8 +3,8 @@ import { authRoutes, DEFAULT_LOGIN_REDIRECT, privateRoutes } from "./lib/routes"
 
 export function proxy(request:NextRequest){
     const {pathname} = request.nextUrl;
-    console.log("Printing Request : ", request);
-    console.log("======== Request.nextUrl========", request.nextUrl);
+    // console.log("Printing Request : ", request);
+    // console.log("======== Request.nextUrl========", request.nextUrl);
 
 
     const token = request.cookies.get("token")?.value;
