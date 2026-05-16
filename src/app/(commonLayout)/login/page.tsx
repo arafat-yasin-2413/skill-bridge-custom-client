@@ -1,7 +1,8 @@
 "use client";
 
-import { LoginForm } from "@/components/login-form";
-import LogoBrand from "@/components/shared/LogoBrand";
+import { LoginForm } from "@/components/forms/login-form";
+import LogoBrand from "@/components/shared/layout/LogoBrand";
+import { authClient } from "@/lib/auth-client";
 import { useAuth } from "@/providers/AuthProvider";
 import { getUser } from "@/services/auth";
 import Link from "next/link";
@@ -27,6 +28,13 @@ export default function LoginPage() {
     const { loadUser } = useAuth();
 
     const callbackUrl = searchParams.get("callbackUrl") || "/";
+
+    const handleGoogleLogin = async()=>{
+        await authClient.signIn.social({
+            provider: "google",
+            callbackURL: `${process.env.NEXT_PUBLIC_APP_URL}/google-success`,
+        });
+    };
 
     const onSubmit = async (data: loginFormValues) => {
         console.log(data);
@@ -98,6 +106,7 @@ export default function LoginPage() {
                     onSubmit={onSubmit}
                     errors={errors}
                     isSubmitting={isSubmitting}
+                    handleGoogleLogin={handleGoogleLogin}
                 />
             </div>
         </div>

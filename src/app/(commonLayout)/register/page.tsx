@@ -1,7 +1,8 @@
 "use client";
 
-import { RegisterForm } from "@/components/register-form";
-import LogoBrand from "@/components/shared/LogoBrand";
+import { RegisterForm } from "@/components/forms/register-form";
+import LogoBrand from "@/components/shared/layout/LogoBrand";
+import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 
 import { useForm } from "react-hook-form";
@@ -20,8 +21,25 @@ export default function RegisterPage() {
         handleSubmit,
         control,
         reset,
+        watch,
         formState: { errors, isSubmitting },
     } = useForm<registerFormValues>();
+
+    const selectedRole = watch("role");
+
+    const handleGoogleRegister = async()=>{
+        const role = watch("role");
+
+        if(!role) {
+            toast.error("Please select a role first.");
+            return;
+        }
+
+        await authClient.signIn.social({
+            provider: "google",
+            callbackURL: `${process.env.NEXT_PUBLIC_APP_URL}/google-success?role=${role}`,
+        });
+    };
 
     const onSubmit = async (data: registerFormValues) => {
         console.log(data);
@@ -83,7 +101,10 @@ export default function RegisterPage() {
                     control={control}
                     onSubmit={onSubmit}
                     errors={errors}
+                    watch={watch}
                     isSubmitting={isSubmitting}
+                    handleGoogleRegister={handleGoogleRegister}
+                    selectedRole={watch("role")}
                 />
             </div>
         </div>

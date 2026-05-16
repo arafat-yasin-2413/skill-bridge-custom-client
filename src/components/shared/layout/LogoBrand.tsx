@@ -1,6 +1,4 @@
-import React from "react";
-
-import logoImage from "../../../public/Logo.png";
+import logoImage from "../../../../public/Logo.png";
 import Image from "next/image";
 
 export default function LogoBrand() {

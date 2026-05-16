@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-
 import {
     Card,
     CardContent,
@@ -10,7 +9,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-
 import {
     Field,
     FieldDescription,
@@ -18,155 +16,71 @@ import {
     FieldLabel,
     FieldSeparator,
 } from "@/components/ui/field";
-
 import { Input } from "@/components/ui/input";
-
+import { FcGoogle } from "react-icons/fc";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-    SelectGroup,
-} from "@/components/ui/select";
-
-import {
-    Control,
-    Controller,
     FieldErrors,
     SubmitHandler,
     UseFormHandleSubmit,
     UseFormRegister,
 } from "react-hook-form";
-
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
+import { Eye, EyeOff } from "lucide-react";
 
-type RegisterFormValues = {
-    role: "STUDENT" | "TUTOR";
-    name: string;
+type loginFormValues = {
     email: string;
     password: string;
 };
 
-type RegisterFormProps = {
-    register: UseFormRegister<RegisterFormValues>;
-    handleSubmit: UseFormHandleSubmit<RegisterFormValues>;
-    onSubmit: SubmitHandler<RegisterFormValues>;
-    errors: FieldErrors<RegisterFormValues>;
+type loginFormProps = {
+    register: UseFormRegister<loginFormValues>;
+    handleSubmit: UseFormHandleSubmit<loginFormValues>;
+    onSubmit: SubmitHandler<loginFormValues>;
+    errors: FieldErrors<loginFormValues>;
     isSubmitting: boolean;
-    control: Control<RegisterFormValues>;
     className?: string;
+    handleGoogleLogin: ()=>void;
 };
 
-export function RegisterForm({
+export function LoginForm({
     className,
     register,
     handleSubmit,
     onSubmit,
     errors,
+    handleGoogleLogin,
     isSubmitting,
-    control,
-}: RegisterFormProps) {
+    ...props
+}: loginFormProps) {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
-        <div className={cn("flex flex-col gap-6", className)}>
+        <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
                 <CardHeader className="text-center">
-                    <CardTitle className="text-xl">
-                        Create your account
-                    </CardTitle>
-
+                    <CardTitle className="text-xl">Welcome back</CardTitle>
                     <CardDescription>
-                        Enter your information below
+                        Login with your Google account
                     </CardDescription>
                 </CardHeader>
-
                 <CardContent>
-                    <form
-                        onSubmit={handleSubmit(onSubmit)}
-                        className="space-y-4">
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <FieldGroup>
-                            {/* ROLE */}
+                            
                             <Field>
-                                <FieldLabel>Role</FieldLabel>
-
-                                <Controller
-                                    name="role"
-                                    control={control}
-                                    rules={{
-                                        required: "Role is required",
-                                    }}
-                                    render={({ field }) => (
-                                        <Select
-                                            onValueChange={field.onChange}
-                                            defaultValue={field.value}>
-                                            <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select role" />
-                                            </SelectTrigger>
-
-                                            <SelectContent>
-                                                <SelectGroup>
-                                                    <SelectItem value="STUDENT">
-                                                        STUDENT
-                                                    </SelectItem>
-
-                                                    <SelectItem value="TUTOR">
-                                                        TUTOR
-                                                    </SelectItem>
-                                                </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
-                                    )}
-                                />
-
-                                {errors.role && (
-                                    <FieldDescription className="text-red-500">
-                                        {errors.role.message}
-                                    </FieldDescription>
-                                )}
-                            </Field>
-
-                            {/* GOOGLE */}
-                            <Field>
-                                <Button variant="outline" type="button">
+                                <Button variant="outline" type="button" onClick={handleGoogleLogin}>
                                     <FcGoogle />
-                                    Register with Google
+                                    Login with Google
                                 </Button>
                             </Field>
                             <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                                 Or continue with
                             </FieldSeparator>
 
-                            {/* NAME */}
-                            <Field>
-                                <FieldLabel htmlFor="name">
-                                    Full Name
-                                </FieldLabel>
-
-                                <Input
-                                    id="name"
-                                    type="text"
-                                    placeholder="John Doe"
-                                    {...register("name", {
-                                        required: "Name is required",
-                                    })}
-                                />
-
-                                {errors.name && (
-                                    <FieldDescription className="text-red-500">
-                                        {errors.name.message}
-                                    </FieldDescription>
-                                )}
-                            </Field>
-
                             {/* EMAIL */}
                             <Field>
                                 <FieldLabel htmlFor="email">Email</FieldLabel>
-
                                 <Input
                                     id="email"
                                     type="email"
@@ -179,7 +93,6 @@ export function RegisterForm({
                                         },
                                     })}
                                 />
-
                                 {errors.email && (
                                     <FieldDescription className="text-red-500">
                                         {errors.email.message}
@@ -189,9 +102,16 @@ export function RegisterForm({
 
                             {/* PASSWORD */}
                             <Field>
-                                <FieldLabel htmlFor="password">
-                                    Password
-                                </FieldLabel>
+                                <div className="flex items-center">
+                                    <FieldLabel htmlFor="password">
+                                        Password
+                                    </FieldLabel>
+                                    <Link
+                                        href="/forgot-password"
+                                        className="ml-auto text-sm underline-offset-4 hover:underline">
+                                        Forgot your password?
+                                    </Link>
+                                </div>
 
                                 <div className="relative">
                                     <Input
@@ -226,7 +146,6 @@ export function RegisterForm({
                                         )}
                                     </Button>
                                 </div>
-
                                 {errors.password ? (
                                     <FieldDescription className="text-red-500">
                                         {errors.password.message}
@@ -237,24 +156,25 @@ export function RegisterForm({
                                     </FieldDescription>
                                 )}
                             </Field>
-
-                            {/* BUTTON */}
                             <Field>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting
-                                        ? "Creating..."
-                                        : "Create Account"}
+                                    {isSubmitting ? "Logging in" : "Log in"}
                                 </Button>
 
                                 <FieldDescription className="text-center">
-                                    Already have an account?{" "}
-                                    <Link href="/login">Log in</Link>
+                                    Don&apos;t have an account?{" "}
+                                    <Link href="/register">Register</Link>
                                 </FieldDescription>
                             </Field>
                         </FieldGroup>
                     </form>
                 </CardContent>
             </Card>
+            <FieldDescription className="px-6 text-center">
+                By clicking continue, you agree to our{" "}
+                <Link href="/terms-policy">Terms of Service</Link> and{" "}
+                <Link href="/privacy-policy">Privacy Policy</Link>.
+            </FieldDescription>
         </div>
     );
 }
