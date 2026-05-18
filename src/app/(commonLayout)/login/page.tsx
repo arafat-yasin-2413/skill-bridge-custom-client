@@ -36,62 +36,62 @@ export default function LoginPage() {
         });
     };
 
-    const onSubmit = async (data: loginFormValues) => {
+    // const onSubmit = async (data: loginFormValues) => {
         console.log(data);
 
         const toastId = toast.loading("Logging In....");
         try {
-            // api call here
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    credentials: "include",
-                    body: JSON.stringify(data),
-                },
-            );
+        //     // api call here
+        //     const response = await fetch(
+        //         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
+        //         {
+        //             method: "POST",
+        //             headers: {
+        //                 "Content-Type": "application/json",
+        //             },
+        //             credentials: "include",
+        //             body: JSON.stringify(data),
+        //         },
+        //     );
 
-            const result = await response.json();
-            // console.log("Login response printing ---- : ", response);
-            // console.log("Login result printing ---- : ", result);
+        //     const result = await response.json();
+        //     // console.log("Login response printing ---- : ", response);
+        //     // console.log("Login result printing ---- : ", result);
 
-            if (!response.ok) {
-                // throw new Error(result.message || "Login Failed!!!");
-                toast.error(result.message || "Login failed.", {
-                    id: toastId,
-                });
+        //     if (!response.ok) {
+        //         // throw new Error(result.message || "Login Failed!!!");
+        //         toast.error(result.message || "Login failed.", {
+        //             id: toastId,
+        //         });
 
-                return;
-            }
+        //         return;
+        //     }
 
-            toast.success(result.message, {
-                id: toastId,
-            });
+        //     toast.success(result.message, {
+        //         id: toastId,
+        //     });
 
-            // console.log("Token ====== : ", result.data.token);
-            console.log("Success. ", result);
+        //     // console.log("Token ====== : ", result.data.token);
+        //     console.log("Success. ", result);
             
-            // auth state update
-            await loadUser();
+        //     // auth state update
+        //     await loadUser();
 
-            reset();
-            router.push(callbackUrl);
-            router.refresh();
-        } catch (error) {
-            toast.error(
-                error instanceof Error
-                    ? error.message
-                    : "Something went wrong!",
-                {
-                    id: toastId,
-                },
-            );
+        //     reset();
+        //     router.push(callbackUrl);
+        //     router.refresh();
+        // } catch (error) {
+        //     toast.error(
+        //         error instanceof Error
+        //             ? error.message
+        //             : "Something went wrong!",
+        //         {
+        //             id: toastId,
+        //         },
+        //     );
 
-            console.error("Error : ", error);
-        }
+        //     console.error("Error : ", error);
+        // }
     };
 
     return (
