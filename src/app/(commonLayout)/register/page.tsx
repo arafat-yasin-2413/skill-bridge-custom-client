@@ -41,50 +41,50 @@ export default function RegisterPage() {
         });
     };
 
-    // const onSubmit = async (data: registerFormValues) => {
-    //     console.log(data);
-    //     const toastId = toast.loading("Creating Account....");
-    //     try {
-    //         // api call here
-    //         const response = await fetch(
-    //             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/register`,
-    //             {
-    //                 method: "POST",
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                 },
-    //                 body: JSON.stringify(data),
-    //             },
-    //         );
+    const onSubmit = async (data: registerFormValues) => {
+        console.log(data);
+        const toastId = toast.loading("Creating Account....");
+        try {
+            // api call here
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/register`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                },
+            );
 
-    //         const result = await response.json();
-    //         console.log("Register response printing ---- : ", response);
-    //         console.log("Register result printing ---- : ", result);
+            const result = await response.json();
+            console.log("Register response printing ---- : ", response);
+            console.log("Register result printing ---- : ", result);
 
-    //         if (!response.ok) {
-    //             // throw new Error(result.message || "Registration Failed!!!");
-    //             toast.error(result.message || "Registration failed.", {
-    //                 id: toastId,
-    //             });
+            if (!response.ok) {
+                // throw new Error(result.message || "Registration Failed!!!");
+                toast.error(result.message || "Registration failed.", {
+                    id: toastId,
+                });
 
-    //             return;
+                return;
 
-    //         }
+            }
 
-    //         toast.success("Account created Successfully!", {
-    //             id: toastId,
-    //         });
+            toast.success("Account created Successfully!", {
+                id: toastId,
+            });
 
-    //         console.log("Success. ", result);
-    //         reset();
-    //     } catch (error) {
-    //         toast.error(error instanceof Error ? error.message : "Something went wrong!", {
-    //             id: toastId,
-    //         });
+            console.log("Success. ", result);
+            reset();
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : "Something went wrong!", {
+                id: toastId,
+            });
 
-    //         console.error("Error : ", error);
-    //     }
-    // };
+            console.error("Error : ", error);
+        }
+    };
 
     return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
