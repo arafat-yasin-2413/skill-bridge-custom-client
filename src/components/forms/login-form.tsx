@@ -121,7 +121,7 @@ export function LoginForm({
                                         }
                                         className="pr-10"
                                         {...register("password", {
-                                            required: "Password is required",
+                                            required: "Password is Required",
 
                                             minLength: {
                                                 value: 8,
