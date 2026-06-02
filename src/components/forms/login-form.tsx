@@ -86,7 +86,7 @@ export function LoginForm({
                                     type="email"
                                     placeholder="m@example.com"
                                     {...register("email", {
-                                        required: "Email is required",
+                                        required: "Email is Required",
                                         pattern: {
                                             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                                             message: "Enter a valid email",
